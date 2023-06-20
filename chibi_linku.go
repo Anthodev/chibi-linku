@@ -14,6 +14,7 @@ func Run() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", getRootHandler())
 	go mux.HandleFunc("/encode", getEncodeHandler())
+	go mux.HandleFunc("/decode/{code}", decodeHandler())
 
 	log.Println("Listening on port 80")
 

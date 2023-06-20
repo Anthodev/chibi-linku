@@ -3,6 +3,7 @@ package chibi_linku
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 )
 
 func getRootHandler() http.HandlerFunc {
@@ -23,5 +24,13 @@ func getRootHandler() http.HandlerFunc {
 func getEncodeHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		handleEncodeRequest(w, parseRequest(r.Body, w).Link)
+	}
+}
+
+func decodeHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := strings.Split(r.RequestURI, "/")
+		code := vars[len(vars)-1]
+		handleDecodeRequest(w, r, code)
 	}
 }

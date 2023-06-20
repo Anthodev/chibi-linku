@@ -68,3 +68,20 @@ func TestEncoreUrl(t *testing.T) {
 			wr.Body.String(), expected)
 	}
 }
+
+func TestDecodeAndRedirect(t *testing.T) {
+	nr := httptest.NewRequest("GET", "/decode/2my0rvHAvGxZOpU2jvJcLJw1", nil)
+	wr := httptest.NewRecorder()
+
+	decodeHandler().ServeHTTP(wr, nr)
+
+	if status := wr.Code; status != http.StatusTemporaryRedirect {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusTemporaryRedirect)
+	}
+
+	expected := "https://google.com"
+
+	if wr.Header().Get("Location") != expected {
+		t.Errorf("handler returned unexpected body: got %v want %v", wr.Body.String(), expected)
+	}
+}
