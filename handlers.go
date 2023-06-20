@@ -1,6 +1,8 @@
 package chibi_linku
 
-import "net/http"
+import (
+	"net/http"
+)
 
 func getRootHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -17,10 +19,8 @@ func getRootHandler() http.HandlerFunc {
 func getEncodeHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		data := parseRequest(r.Body, w)
+		encodedUrl := Base62Encode(data.Link)
 
-		_, err := w.Write([]byte(data.Link + " " + string(rune(data.Expiration))))
-		if err != nil {
-			return
-		}
+		sendResponse(w, encodedUrl)
 	}
 }

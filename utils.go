@@ -6,17 +6,17 @@ import (
 	"net/http"
 )
 
+type jer struct {
+	Link string `json:"link"`
+}
+
 func sendResponse(w http.ResponseWriter, response interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 
-	jsonData, err := json.Marshal(response)
-
-	if err != nil {
-		http.Error(w, "Error marshalling response", http.StatusInternalServerError)
-	}
+	jsonData := buildResponse(response)
 
 	w.WriteHeader(http.StatusOK)
-	_, err = w.Write(jsonData)
+	_, err := w.Write(jsonData)
 
 	if err != nil {
 		http.Error(w, "Error writing response", http.StatusInternalServerError)
@@ -36,4 +36,18 @@ func parseRequest(r io.ReadCloser, w http.ResponseWriter) Url {
 	}
 
 	return ur
+}
+
+func buildResponse(response interface{}) []byte {
+	jsonValue := jer{
+		Link: response.(string),
+	}
+
+	jsonData, err := json.Marshal(jsonValue)
+
+	if err != nil {
+		return nil
+	}
+
+	return jsonData
 }
