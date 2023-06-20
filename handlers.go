@@ -1,26 +1,27 @@
 package chibi_linku
 
 import (
+	"encoding/json"
 	"net/http"
 )
 
 func getRootHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		sendResponse(w, "Hello, World!")
+		marshal, err := json.Marshal("Hello, World!")
+		if err != nil {
+			return
+		}
 
 		w.WriteHeader(http.StatusOK)
-		_, err := w.Write([]byte(""))
+		_, err = w.Write(marshal)
 		if err != nil {
-			http.Error(w, "Error writing response", http.StatusInternalServerError)
+			return
 		}
 	}
 }
 
 func getEncodeHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		data := parseRequest(r.Body, w)
-		encodedUrl := Base62Encode(data.Link)
-
-		sendResponse(w, encodedUrl)
+		handleEncodeRequest(w, parseRequest(r.Body, w).Link)
 	}
 }

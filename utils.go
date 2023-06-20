@@ -10,7 +10,7 @@ type jer struct {
 	Link string `json:"link"`
 }
 
-func sendResponse(w http.ResponseWriter, response interface{}) {
+func sendResponse(w http.ResponseWriter, response string) {
 	w.Header().Set("Content-Type", "application/json")
 
 	jsonData := buildResponse(response)
@@ -38,9 +38,9 @@ func parseRequest(r io.ReadCloser, w http.ResponseWriter) Url {
 	return ur
 }
 
-func buildResponse(response interface{}) []byte {
+func buildResponse(encodedUrl string) []byte {
 	jsonValue := jer{
-		Link: response.(string),
+		Link: encodedUrl,
 	}
 
 	jsonData, err := json.Marshal(jsonValue)

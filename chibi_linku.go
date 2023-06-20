@@ -13,7 +13,7 @@ type Url struct {
 func Run() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", getRootHandler())
-	mux.HandleFunc("/encode", getEncodeHandler())
+	go mux.HandleFunc("/encode", getEncodeHandler())
 
 	log.Println("Listening on port 80")
 
