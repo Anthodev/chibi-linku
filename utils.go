@@ -1,7 +1,9 @@
 package chibi_linku
 
 import (
+	"bytes"
 	"encoding/json"
+	"github.com/asaskevich/govalidator"
 	"io"
 	"net/http"
 )
@@ -35,6 +37,10 @@ func parseRequest(r io.ReadCloser, w http.ResponseWriter) Url {
 		http.Error(w, "Error parsing request body", http.StatusBadRequest)
 	}
 
+	if !govalidator.IsURL(ur.Link) {
+		http.Error(w, "Invalid URL", http.StatusBadRequest)
+	}
+
 	return ur
 }
 
@@ -44,6 +50,7 @@ func buildResponse(encodedUrl string) []byte {
 	}
 
 	jsonData, err := json.Marshal(jsonValue)
+	jsonData = bytes.TrimPrefix(jsonData, []byte("\xef\xbb\xbf"))
 
 	if err != nil {
 		return nil

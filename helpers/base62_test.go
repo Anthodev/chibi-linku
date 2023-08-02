@@ -1,4 +1,4 @@
-package chibi_linku
+package helpers
 
 import (
 	"testing"
