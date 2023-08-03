@@ -11,15 +11,16 @@ type Url struct {
 }
 
 func Run() {
+	port := "8001"
 	mux := http.NewServeMux()
 	go mux.HandleFunc("/encode", encodeHandler())
 	go mux.HandleFunc("/decode/{code}", decodeHandler())
 	go mux.HandleFunc("/purge", purgeHandler())
-	go mux.HandleFunc("/", rootHandler())
+	go mux.HandleFunc("/ping", pingHandler())
 
-	log.Println("Listening on port 80")
+	log.Println("Listening on port " + port)
 
-	err := http.ListenAndServe(":8001", mux)
+	err := http.ListenAndServe(port, mux)
 
 	if err != nil {
 		return

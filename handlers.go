@@ -1,3 +1,5 @@
+removing previous socket...
+Starting SSH-Agent relay...
 package chibi_linku
 
 import (
@@ -7,9 +9,9 @@ import (
 	"strings"
 )
 
-func rootHandler() http.HandlerFunc {
+func pingHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		marshal, err := json.Marshal("Hello, World!")
+		marshal, err := json.Marshal("Pong!")
 		if err != nil {
 			return
 		}

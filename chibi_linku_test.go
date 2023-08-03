@@ -1,3 +1,5 @@
+removing previous socket...
+Starting SSH-Agent relay...
 package chibi_linku
 
 import (
@@ -18,14 +20,14 @@ func TestWebServerRunning(t *testing.T) {
 
 	wr := httptest.NewRecorder()
 
-	rootHandler().ServeHTTP(wr, nr)
+	pingHandler().ServeHTTP(wr, nr)
 
 	if status := wr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
 			status, http.StatusOK)
 	}
 
-	expected := `"Hello, World!"`
+	expected := `"Pong!"`
 
 	if wr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
