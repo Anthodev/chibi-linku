@@ -9,10 +9,7 @@ import (
 
 func pingHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			http.Error(w, "Invalid method", http.StatusMethodNotAllowed)
-			return
-		}
+		HandleInvalidHttpMethod(w, r, http.MethodGet)
 
 		marshal, err := json.Marshal("Pong!")
 		if err != nil {
@@ -29,10 +26,7 @@ func pingHandler() http.HandlerFunc {
 
 func encodeHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPost {
-			http.Error(w, "Invalid method", http.StatusMethodNotAllowed)
-			return
-		}
+		HandleInvalidHttpMethod(w, r, http.MethodPost)
 
 		request := parseRequest(r.Body, w)
 		link := request.Link
@@ -43,10 +37,7 @@ func encodeHandler() http.HandlerFunc {
 
 func decodeHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			http.Error(w, "Invalid method", http.StatusMethodNotAllowed)
-			return
-		}
+		HandleInvalidHttpMethod(w, r, http.MethodGet)
 
 		vars := strings.Split(r.RequestURI, "/")
 		code := vars[len(vars)-1]
@@ -56,10 +47,7 @@ func decodeHandler() http.HandlerFunc {
 
 func purgeHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			http.Error(w, "Invalid method", http.StatusMethodNotAllowed)
-			return
-		}
+		HandleInvalidHttpMethod(w, r, http.MethodGet)
 
 		rds := database.CreateClient(1)
 		err := rds.FlushAll(r.Context()).Err()

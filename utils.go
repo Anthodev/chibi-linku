@@ -58,3 +58,9 @@ func buildResponse(encodedUrl string) []byte {
 
 	return jsonData
 }
+
+func HandleInvalidHttpMethod(w http.ResponseWriter, r *http.Request, s string) {
+	if r.Method != s {
+		http.Error(w, "Invalid HTTP method", http.StatusMethodNotAllowed)
+	}
+}

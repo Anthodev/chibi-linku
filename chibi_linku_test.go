@@ -14,7 +14,7 @@ type er struct {
 }
 
 func TestWebServerRunning(t *testing.T) {
-	nr := httptest.NewRequest("GET", "/", nil)
+	nr := httptest.NewRequest(http.MethodGet, "/ping", nil)
 
 	wr := httptest.NewRecorder()
 
@@ -45,7 +45,7 @@ func TestEncodeUrl(t *testing.T) {
 	bodyValue, _ := json.Marshal(url)
 	bodyValue = bytes.TrimPrefix(bodyValue, []byte("\xef\xbb\xbf"))
 
-	nr := httptest.NewRequest("POST", "/encode", bytes.NewBuffer(bodyValue))
+	nr := httptest.NewRequest(http.MethodPost, "/encode", bytes.NewBuffer(bodyValue))
 	nr.Header.Set("Content-Type", "application/json")
 
 	wr := httptest.NewRecorder()
@@ -85,7 +85,7 @@ func TestEncodeUrlWithExpiration(t *testing.T) {
 	bodyValue, _ := json.Marshal(url)
 	bodyValue = bytes.TrimPrefix(bodyValue, []byte("\xef\xbb\xbf"))
 
-	nr := httptest.NewRequest("POST", "/encode", bytes.NewBuffer(bodyValue))
+	nr := httptest.NewRequest(http.MethodPost, "/encode", bytes.NewBuffer(bodyValue))
 	nr.Header.Set("Content-Type", "application/json")
 
 	wr := httptest.NewRecorder()
@@ -122,7 +122,7 @@ func TestDecodeAndRedirect(t *testing.T) {
 		return
 	}
 
-	nr := httptest.NewRequest("GET", "/decode/2my0rvHAvGxZOpU2jvJcLJw1", nil)
+	nr := httptest.NewRequest(http.MethodGet, "/decode/2my0rvHAvGxZOpU2jvJcLJw1", nil)
 	wr := httptest.NewRecorder()
 
 	decodeHandler().ServeHTTP(wr, nr)
@@ -147,7 +147,7 @@ func TestDecodeAndRedirectWithExpiration(t *testing.T) {
 		return
 	}
 
-	nr := httptest.NewRequest("GET", "/decode/2my0rvHAvGxZOpU2jvJcLJw1", nil)
+	nr := httptest.NewRequest(http.MethodGet, "/decode/2my0rvHAvGxZOpU2jvJcLJw1", nil)
 	wr := httptest.NewRecorder()
 
 	decodeHandler().ServeHTTP(wr, nr)
@@ -172,7 +172,7 @@ func TestDecodeAndRedirectWithExpiredUrl(t *testing.T) {
 		return
 	}
 
-	nr := httptest.NewRequest("GET", "/decode/2my0rvHAvGxZOpU2jvJcLJw1", nil)
+	nr := httptest.NewRequest(http.MethodGet, "/decode/2my0rvHAvGxZOpU2jvJcLJw1", nil)
 	wr := httptest.NewRecorder()
 
 	decodeHandler().ServeHTTP(wr, nr)
